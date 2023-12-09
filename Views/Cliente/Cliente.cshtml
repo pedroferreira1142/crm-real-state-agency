@@ -1,0 +1,200 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Página do Cliente";
+}
+@{
+    var cliente = ViewBag.Cliente;
+    var tipoCliente = ViewBag.TipoCliente;
+    var tipologiaClienteId = ViewBag.TipologiaClienteId;
+    var localizacao = ViewBag.Localizacao;
+    var localizacaoLista = ViewBag.LocalizacaoLista;
+    var tipologiaLista = ViewBag.TipologiaLista;
+    var tipoLembrete = ViewBag.TipoLembrete;
+    var lembrete = ViewBag.Lembretes;
+    var tipoLembreteOpcional = ViewBag.TipoLembreteOpcional;
+}
+<table class="table table-hover">
+    <tr>
+        <td>Nome:</td>
+        <td>@cliente.Nome</td>
+    </tr>
+    <tr>
+        <td>Contacto:</td>
+        <td>@cliente.Contacto</td>
+    </tr>
+    <tr>
+        <td>E-Mail:</td>
+        <td>@cliente.EMail</td>
+    </tr>
+    <tr>
+        <td>Tipo de Cliente:</td>
+        <td>@tipoCliente.Designacao</td>
+    </tr>
+    <tr>
+        <td>Data de Nacimento:</td>
+        <td>@cliente.DataNascimento</td>
+    </tr>
+    <tr>
+        <td>Observações:</td>
+        <td>@cliente.Observacoes</td>
+    </tr>
+    <tr>
+        <td>Preço Pretendido:</td>
+        <td>@cliente.PrecoPretendido</td>
+    </tr>
+    <tr>
+        <td>Localização Pretendida:</td>
+        <td>@localizacao.Designacao</td>
+    </tr>
+    <tr>
+        <td>Tipologia:</td>
+        <td>@tipologiaClienteId.Designacao</td>
+    </tr>
+</table>
+<form action="/Cliente/Remover/@cliente.Uid" method="post"
+      onclick="return confirm('Tem a certeza que pretende apagar este registo?')">
+    <button type="submit" class="btn btn-outline-dark"><i class="fas fa-trash-alt text-black-50">Remover Cliente</i></button>
+</form>
+
+
+<!---------- LEMBRETES ---------->
+<h2>Lembretes:</h2>
+<a href="/Lembrete/Criar/@cliente.Uid" class="btn btn-secondary">Criar Lembrete</a>
+<br />
+<br />
+
+<table border="1" class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Data do Lembrete</th>
+            <th>Estado</th>
+            <th colspan="3">Operações</th>
+        </tr>
+    </thead>
+    @{
+        foreach (var l in lembrete)
+        {
+        <tr>
+            <td>@l.Titulo</td>
+            <td>@l.Descricao</td>
+            <td>@l.DataLembrete</td>
+            <td>
+                @{
+                    if (l.Estado == 1)
+                    {
+                        <span>Aberto</span>
+                    }
+                    else
+                    {
+                        <span>Concluído</span>
+                    }
+                }
+            </td>
+            <td>
+                <!-- Ancora para rotear o id para o controller Cliente-->
+                @{
+                    if (l.IdTipoLembrete == tipoLembreteOpcional.Uid)
+                    {
+                        <a href="/Lembrete/Editar/@l.Uid" class="btn btn-secondary">Editar</a>
+                    }
+                    else
+                    {
+                        <span>Não editável</span>
+                    }
+                }
+            </td>
+            <td>
+                <!-- Ancora para rotear o id para o controller Cliente-->
+                @if (l.Estado == 1)
+                {
+                    <a href="/Lembrete/Concluir/@l.Uid" 
+                       onclick="return confirm('Tem a certeza que pretende concluir este Lembrete?')"
+                       class="btn btn-secondary">
+                        Concluir
+                    </a>
+                }
+                else
+                {
+                    <span>Concluído</span>
+                }
+            </td>
+            <td>
+                <a href="/Lembrete/Remover/@l.Uid"
+                   onclick="return confirm('Tem a certeza que pretende apagar este registo?')"
+                   class="btn btn-secondary">
+                    Remover
+                </a>
+            </td>
+        </tr>
+
+        }
+    }
+</table> <br/>
+<!------------------------------->
+
+
+<!-- TRANSAÇÕES -->
+<h2>Histórico de transações:</h2>
+<a href="/Transacao/Criar/@cliente.Uid" class="btn btn-secondary">Inserir Transação</a>
+<br />
+<br />
+
+<table border="1" class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Data da Transação</th>
+            <th>Preço</th>
+            <th>Tipologia</th>
+            <th>Localização</th>
+            <th colspan="2">Operações</th>
+        </tr>
+    </thead>
+    @{
+        foreach (Transacao transacao in ViewBag.Transacao)
+        {
+            <tr>
+                <td>@transacao.Titulo</td>
+                <td>@transacao.Descricao</td>
+                <td>@transacao.DataTransacao</td>
+                <td>@transacao.Preco</td>
+                <td>
+                    @{
+                        foreach (ItemLista tipologia in tipologiaLista)
+                        {
+                            if (tipologia.Uid == transacao.IdTipologia)
+                                @tipologia.Designacao;
+                            }
+                    }
+                </td>
+                <td>
+                    @{
+                        foreach (ItemLista itemLocalizacao in localizacaoLista)
+                        {
+                            if (itemLocalizacao.Uid == transacao.IdLocalizacao)
+                                @itemLocalizacao.Designacao;
+                            }
+                    }
+                </td>
+
+                <td>
+                    <!-- Ancora para rotear o id para o controller Cliente-->
+                    <a href="/Transacao/Editar/@transacao.Uid" class="btn btn-secondary">Editar</a>
+                </td>
+                <td>
+                    <a href="/Transacao/Remover/@transacao.Uid" 
+                       onclick="return confirm('Tem a certeza que pretende apagar este registo?')"
+                       class="btn btn-secondary">
+                        Remover
+                    </a>
+                </td>
+            </tr>
+
+        }
+    }
+</table>
+
+

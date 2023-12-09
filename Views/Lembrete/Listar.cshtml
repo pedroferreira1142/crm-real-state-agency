@@ -1,0 +1,113 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Listagem de Lembretes";
+}
+
+<!-- LISTAR LEMBRETES -->
+
+@{ 
+    var tipoLembrete = ViewBag.TipoLembrete;
+    var cliente = ViewBag.Cliente;
+    var tipoLembreteOpcional = ViewBag.TipoLembreteOpcional;
+}
+
+<h1>
+    Lista de Lembretes
+</h1>
+<h2>
+    <a href="/Lembrete/Listar/1" class="btn btn-outline-dark">Abertos</a>&nbsp;
+    <a href="/Lembrete/Listar/0" class="btn btn-outline-dark">Resolvidos</a>
+</h2>
+
+<div class="table-responsive">
+    <table border="1" class="table table-hover">
+        <thead class="thead-dark text-center">
+            <tr class="align-middle">
+                <th>Título</th>
+                <th>Descrição</th>
+                <th>Data do Lembrete</th>
+                <th>Tipo de Lembrete</th>
+                <th>Cliente</th>
+                <th>Estado</th>
+                <th colspan="3">Operações</th>
+            </tr>
+        </thead>
+        @{
+            foreach (var lembrete in Model)
+            {
+                <tr>
+                    <td>@lembrete.Titulo</td>
+                    <td>@lembrete.Descricao</td>
+                    <td>@lembrete.DataLembrete</td>
+                    <td>
+                        @{
+                            foreach (var tipo in tipoLembrete)
+                            {
+                                if (tipo.Uid == lembrete.IdTipoLembrete)
+                                    @tipo.Designacao;
+                                }
+                        }
+                    </td>
+                    <td>
+                        @{
+                            foreach (Cliente c in cliente)
+                            {
+                                if (c.Uid == lembrete.IdCliente)
+                                    @c.Nome;
+                                }
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (lembrete.Estado == 1)
+                            {
+                                <span>Aberto</span>
+                            }
+                            else
+                            {
+                                <span>Concluído</span>
+                            }
+
+                        }
+                    </td>
+                    <td>
+                        <!-- Ancora para rotear o id para o controller Cliente-->
+                        @{
+                            if (lembrete.IdTipoLembrete == tipoLembreteOpcional.Uid)
+                            {
+                                <a href="/Lembrete/Editar/@lembrete.Uid" class="btn btn-secondary">Editar</a>
+                            }
+                            else
+                            {
+                                <span>Não editável</span>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <!-- Ancora para rotear o id para o controller Cliente-->
+                        @if (lembrete.Estado == 1)
+                        {
+                            <a href="/Lembrete/Concluir/@lembrete.Uid"
+                               onclick="return confirm('Tem a certeza que pretende concluir este Lembrete?')"
+                               class="btn btn-secondary">
+                                Concluir
+                            </a>
+                        }
+                        else
+                        {
+                            <span>Concluído</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/Lembrete/Remover/@lembrete.Uid"
+                           onclick="return confirm('Tem a certeza que pretende apagar este registo?')"
+                           class="btn btn-secondary">
+                            Remover
+                        </a>
+                    </td>
+                </tr>
+
+            }
+        }
+    </table>
+</div>

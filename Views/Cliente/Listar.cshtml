@@ -1,0 +1,64 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Criar Cliente";
+}
+
+<h1>
+    Lista de Clientes
+</h1>
+<h2>
+    <a href="/Cliente/Listar/1" class="btn btn-outline-dark">Ativos</a>&nbsp;
+    <a href="/Cliente/Listar/0" class="btn btn-outline-dark">Inativos</a>
+</h2>
+
+<div class="table-responsive">
+    <table border="1" class="table table-hover">
+        <thead class="thead-dark text-center">
+            <tr>
+                <th>Nome</th>
+                <th>Contacto</th>
+                <th>Preço Pretendido</th>
+                <th>Localização</th>
+                <th>Tipologia</th>
+                <th>Tipo de Cliente</th>
+                <th colspan="4">Operações</th>
+            </tr>
+        </thead>
+        @{
+            foreach (var cliente in Model)
+            {
+                <tr>
+                    <td>@cliente.Nome</td>
+                    <td>@cliente.Contacto</td>
+                    <td>@cliente.PrecoPretendido</td>
+                    <td>@cliente.Localizacao</td>
+                    <td>@cliente.Tipologia</td>
+                    <td>@cliente.TipoCliente</td>
+                    <td>
+                        <!-- Ancora para rotear o id para o controller Cliente-->
+                        <a href="/Cliente/Cliente/@cliente.Uid" class="btn btn-secondary">Ver Cliente</a>
+
+                    </td>
+                    <td>
+                        <!-- Ancora para rotear o id para o controller Cliente-->
+                        @*Html.ActionLink("Editar", "Editar", "Cliente", new { id = cliente.Uid }, null)*@
+                        <a href="/Cliente/Editar/@cliente.Uid" class="btn btn-secondary">Editar</a>
+                    </td>
+                    <td>
+                        <!-- Ancora para rotear o id para o controller Cliente-->
+                        @if (cliente.Estado == 0)
+                        {
+                            <a href="/Cliente/Ativar/@cliente.Uid" class="btn btn-secondary">Ativar</a>
+                        }
+                        else
+                        {
+                            <a href="/Cliente/Desativar/@cliente.Uid" class="btn btn-secondary">Desativar</a>
+                        }
+                    </td>
+                </tr>
+
+            }
+        }
+    </table>
+</div>

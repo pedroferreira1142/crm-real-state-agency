@@ -1,0 +1,121 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Editar Cliente";
+}
+
+@{
+    var listaTipoCliente = ViewBag.TipoCliente;
+    var listaLocalizacoes = ViewBag.Localizacao;
+    var listaTipologia = ViewBag.Tipologia;
+}
+
+<h1>Editar Cliente</h1>
+<form action="/Cliente/Editar" method="post" validate>
+
+    <input type="hidden" name="Uid" value="@Model.Uid" />
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="UidTipo">Tipo Cliente</label>
+        <div class="form-group">
+            <select name="UidTipoCliente" class="custom-select">
+                @foreach (var tipoCliente in listaTipoCliente)
+                {
+                    if (tipoCliente.Uid == Model.UidTipoCliente)
+                    {
+                        <option value="@tipoCliente.Uid" selected="selected">@tipoCliente.Designacao</option>
+                    }
+                    else
+                    {
+                        <option value="@tipoCliente.Uid">@tipoCliente.Designacao</option>
+                    }
+                }
+
+            </select>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="Nome">Nome:</label>
+        <div class="form-group">
+            <input class="form-control" type="text" name="Nome" required="required" value="@Model.Nome" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="Contacto">Contacto:</label>
+        <div class="form-group">
+            <input class="form-control" type="text" name="Contacto" required="required" value="@Model.Contacto" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="EMail">E-Mail:</label>
+        <div class="form-group">
+            <input class="form-control" type="text" name="EMail" required="required" value="@Model.EMail" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="DataNascimento">Data Nascimento:</label>
+        <div class="form-group">
+            @Html.TextBox("DataNascimento", Model.DataNascimento, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" });
+        </div>
+    </div>
+
+        <!-- Localização -->
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="UidLocalizacao">Localização Pretendida:</label>
+        <div class="form-group">
+            <select class="custom-select" name="UidLocalizacao">
+                @foreach (var localizacao in listaLocalizacoes)
+                {
+                    if (localizacao.Uid == Model.UidLocalizacao)
+                    {
+                        <option value="@localizacao.Uid" selected="selected">@localizacao.Designacao</option>
+                    }
+                    else
+                    {
+                        <option value="@localizacao.Uid">@localizacao.Designacao</option>
+                    }
+                }
+
+            </select>
+        </div>
+    </div>
+
+        <!-- Tipologia-->
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="UidTipologia">Tipologia:</label>
+        <div class="form-group">
+            <select class="custom-select" name="UidTipologia">
+                @foreach (var tipologia in listaTipologia)
+                {
+                    if (tipologia.Uid == Model.UidTipologia)
+                    {
+                        <option value="@tipologia.Uid" selected="selected">@tipologia.Designacao</option>
+                    }
+                    else
+                    {
+                        <option value="@tipologia.Uid">@tipologia.Designacao</option>
+                    }
+                }
+
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="PrecoPretendido">Preço Prentendido:</label>
+        <div class="form-group">
+            <input class="form-control" type="text" name="PrecoPretendido" value="@Model.PrecoPretendido" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" or="Observacoes">Observações:</label>
+        <div class="form-group">
+            <input class="form-control" type="text" name="Observacoes" value="@Model.Observacoes" />
+        </div>
+    </div>
+        <div class="form-group">
+            <input class="btn btn-dark" type="submit" name="enviar"
+                   value="Editar Cliente" />
+        </div>
+</form>

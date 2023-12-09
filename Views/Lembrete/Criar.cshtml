@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Criação de um Lembrete";
+}
+@{
+    var cliente = ViewBag.Cliente;
+    var lembrete = ViewBag.Lembrete;
+    var tipoLembrete = ViewBag.TipoLembrete;
+}
+
+<!-- LEMBRETES -->
+<h1>Criar Lembrete</h1>
+<form action="/Lembrete/Criar" method="post" validate>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">@cliente.Nome</label>
+        <input type="hidden" name="IdCliente" required="required" readonly="readonly" value="@cliente.Uid" />
+        <!-- Tipo de Lembrete -->
+        <input type="hidden" name="IdTipoLembrete" required="required" readonly="readonly" value="@tipoLembrete.Uid" />
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="Titulo">Titulo:</label>
+        <div class="form-group">
+            <input class="form-control" type="text" name="Titulo" required="required" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="Descricao">Descricao:</label>
+        <div class="form-group">
+            <input class="form-control" type="text" name="Descricao" required="required" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="DataLembrete">Data do Lembrete:</label>
+        <div class="form-group">
+            <input class="form-control" type="date" name="DataLembrete" required="required" />
+        </div>
+    </div>
+        <div class="form-group">
+            <input type="submit" name="enviar"
+                   value="Criar Lembrete"  class="btn btn-dark"/>
+        </div>
+</form>

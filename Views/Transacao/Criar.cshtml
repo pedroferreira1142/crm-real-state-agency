@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Inserir Transação";
+}
+
+<h1>Inserir Transação</h1>
+<form action="/Transacao/Criar" method="post" validate>
+    <div class="form-group">
+        @{var cliente = ViewBag.Cliente;}
+        <label class="control-label col-sm-2">@cliente.Nome</label>
+        <input type="hidden" name="IdCliente" required="required" readonly="readonly" value="@cliente.Uid"/>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="Titulo">Titulo:</label>
+        <div class="form-group">
+            <input class="form-control" type="text" name="Titulo" required="required" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="Descricao">Descricao:</label>
+        <div class="form-group">
+            <input class="form-control" type="text" name="Descricao" required="required" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="Preco">Preço:</label>
+        <div class="form-group">
+            <input class="form-control" type="text" name="Preco" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="DataTransacao">Data da Transacao:</label>
+        <div class="form-group">
+            <input class="form-control" type="date" name="DataTransacao" required="required" />
+        </div>
+    </div>
+
+        <!-- Localização -->
+    <div class="form-group">
+        <label class="control-label col-sm-4" for="IdLocalizacao">Localização Pretendida:</label>
+        <div class="form-group">
+            <select name="IdLocalizacao" class="custom-select">
+                @{ var localizacoes = ViewBag.Localizacao; }
+                @foreach (var localizacao in localizacoes)
+                {
+                    //Propriedades da da classe ItemLista
+                    <option value="@localizacao.Uid">@localizacao.Designacao</option>
+                }
+
+            </select>
+        </div>
+    </div>
+
+        <!-- Tipologia-->
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="IdTipologia">Tipologia:</label>
+        <div class="form-group">
+            <select name="IdTipologia" class="custom-select">
+                @{ var tipologias = ViewBag.Tipologia; }
+                @foreach (var tipologia in tipologias)
+                {
+                    //Propriedades da da classe ItemLista
+                    <option value="@tipologia.Uid">@tipologia.Designacao</option>
+                }
+
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" name="enviar"
+               value="Inserir Transação" class="btn btn-dark"/>
+    </div>
+</form>
